@@ -1,0 +1,53 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {},
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_new_tweet_is_posted": {
+                "evaluatedRecurrence": {
+                    "frequency": "Second",
+                    "interval": 5,
+                    "timeZone": "India Standard Time"
+                },
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twitter']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/onnewtweet",
+                    "queries": {
+                        "searchQuery": "#Microsoft\n"
+                    }
+                },
+                "recurrence": {
+                    "frequency": "Second",
+                    "interval": 5,
+                    "timeZone": "India Standard Time"
+                },
+                "splitOn": "@triggerBody()?['value']",
+                "type": "ApiConnection"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "twitter": {
+                    "connectionId": "/subscriptions/60efa0a4-6a40-442b-afa4-15c67198ed8e/resourceGroups/TwitterBot/providers/Microsoft.Web/connections/twitter",
+                    "connectionName": "twitter",
+                    "id": "/subscriptions/60efa0a4-6a40-442b-afa4-15c67198ed8e/providers/Microsoft.Web/locations/centralindia/managedApis/twitter"
+                }
+            }
+        }
+    }
+}
